@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitness First</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      line-height: 1.6;
+      color: #333;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4361ee;
+      color: white;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      text-align: center;
+    }
+
+    .btn:hover {
+      background-color: #3a56d4;
+      transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      background-color: #a0aec0;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid #4361ee;
+      color: #4361ee;
+    }
+
+    .btn-outline:hover {
+      background-color: #4361ee;
+      color: white;
+    }
+
+    /* Navbar styles */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #4361ee;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #4361ee;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    /* Hero section */
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('main.webp') no-repeat center center;
+      background-size: cover;
+      color: white;
+      padding: 150px 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-content {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h2 {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero p {
+      font-size: 20px;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero .btn {
+      background-color: white;
+      color: #4361ee;
+      font-size: 18px;
+      padding: 12px 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero .btn:hover {
+      background-color: #f8f9fa;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    }
+
+    /* About section */
+    .about {
+      padding: 80px 0;
+      background-color: #f8f9fa;
+    }
+
+    .about h2 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 50px;
+    }
+
+    .about-content {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .about-content p {
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .about-img {
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+    }
+
+    /* Services section */
+    .services {
+      padding: 80px 0;
+    }
+
+    .services h2 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 50px;
+    }
+
+    .service-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 50px;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .service-item img {
+      width: 300px;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .service-text {
+      padding: 30px;
+    }
+
+    .service-text h3 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #4361ee;
+    }
+
+    .service-text p {
+      color: #666;
+    }
+
+    /* Contact section */
+    .contact {
+      padding: 80px 0;
+      background-color: #f8f9fa;
+    }
+
+    .contact h2 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 50px;
+    }
+
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #333;
+      color: white;
+      padding: 60px 0 30px;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer h3 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .contact-info li {
+      margin-bottom: 10px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 20px;
+      font-size: 24px;
+    }
+
+    .social-links i:hover {
+      color: #4361ee;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid #555;
+    }
+
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      display: none;
+    }
+
+    .modal {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      width: 400px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      z-index: 1001;
+      display: none;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .modal-footer {
+      padding: 15px 20px;
+      border-top: 1px solid #eee;
+      text-align: center;
+    }
+
+    /* Form styles */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: #4361ee;
+      outline: none;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-error {
+      color: #e53e3e;
+      font-size: 14px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .form-link {
+      color: #4361ee;
+      font-weight: 500;
+    }
+
+    .form-link:hover {
+      text-decoration: underline;
+    }
+
+    .forgot-link {
+      display: block;
+      text-align: right;
+      font-size: 14px;
+      color: #4361ee;
+      margin-bottom: 20px;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    .success-message {
+      text-align: center;
+      padding: 20px 0;
+      display: none;
+    }
+
+    .success-message i {
+      font-size: 60px;
+      color: #48bb78;
+      margin-bottom: 20px;
+    }
+
+    .success-message h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .success-message p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero h2 {
+        font-size: 36px;
+      }
+
+      .hero p {
+        font-size: 18px;
+      }
+
+      .about-content {
+        flex-direction: column;
+      }
+
+      .service-item {
+        flex-direction: column;
+      }
+
+      .service-item img {
+        width: 100%;
+      }
+
+      .footer-content {
+        flex-direction: column;
+      }
+
+      .modal {
+        width: 90%;
+        right: 5%;
+        left: 5%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Main Content Section -->
+  <div id="main-section">
+    <!-- Navbar Section -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="logo">
+          <h1>Fitness First</h1>
+        </div>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="auth-buttons">
+          <button class="btn btn-outline" onclick="openModal('login-modal')">Login</button>
+          <button class="btn" onclick="openModal('signup-modal')">Sign Up</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Section (Hero) -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <h2>Your Fitness Journey Starts Here</h2>
+          <p>Explore top fitness supplements, equipment, and expert advice!</p>
+          <a href="#services" class="btn">Explore Now</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section (Focus on Fitness) -->
+    <section id="about" class="about">
+      <div class="container">
+        <h2>Fitness Supplements & Equipment</h2>
+        <div class="about-content">
+          <p>At Fitness First, we provide high-quality protein supplements, vitamins, and gym equipment designed to maximize your workout performance and results.</p>
+          <img src="p5.jpg" alt="Fitness Equipment" class="about-img">
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section (Proteins, Equipment, etc.) -->
+    <section id="services" class="services">
+      <div class="container">
+        <h2>Our Services</h2>
+        <div class="service-item">
+          <img src="p1.jpg" alt="Protein Supplements">
+          <div class="service-text">
+            <h3>Protein Supplements</h3>
+            <p>We offer a wide range of protein powders, shakes, and bars to fuel your workouts and recovery.</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <img src="p2.jpg" alt="Gym Equipment">
+          <div class="service-text">
+            <h3>Gym Equipment</h3>
+            <p>We provide the latest fitness equipment, from weights to cardio machines, designed to enhance your fitness goals.</p>
+          </div>
+        </div>
+        <div class="service-item">
+          <img src="p3.png" alt="Vitamins & Supplements">
+          <div class="service-text">
+            <h3>Vitamins & Supplements</h3>
+            <p>Our supplements are tailored to support overall health, strength, and energy for peak performance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+      <div class="container">
+        <h2>Contact Us</h2>
+        <div class="contact-form">
+          <form id="contact-form" onsubmit="return handleContactSubmit(event)">
+            <div class="form-group">
+              <label for="contact-name">Full Name</label>
+              <input type="text" id="contact-name" placeholder="John Doe">
+              <div class="form-error" id="contact-name-error"></div>
+            </div>
+            <div class="form-group">
+              <label for="contact-email">Email</label>
+              <input type="email" id="contact-email" placeholder="your.email@example.com">
+              <div class="form-error" id="contact-email-error"></div>
+            </div>
+            <div class="form-group">
+              <label for="contact-subject">Subject</label>
+              <input type="text" id="contact-subject" placeholder="How can we help you?">
+              <div class="form-error" id="contact-subject-error"></div>
+            </div>
+            <div class="form-group">
+              <label for="contact-message">Message</label>
+              <textarea id="contact-message" placeholder="Your message here..."></textarea>
+              <div class="form-error" id="contact-message-error"></div>
+            </div>
+            <button type="submit" class="btn" style="width: 100%;" id="contact-submit-btn">Send Message</button>
+          </form>
+          <!-- Contact Success Message (Hidden initially) -->
+          <div class="success-message" id="contact-success">
+            <i class="bi bi-check-circle"></i>
+            <h3>Message Sent!</h3>
+            <p>Thank you for contacting us. We'll get back to you soon!</p>
+            <button class="btn btn-outline" onclick="resetContactForm()">Send Another Message</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div>
+            <h3>Contact Us</h3>
+            <p>If you have any questions, feel free to reach out to us!</p>
+            <ul class="contact-info">
+              <li>Email: info@fitnessfirst.com</li>
+              <li>Phone: +92 307 7613426</li>
+              <li>Address: 123 Fit St, fsd City</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Follow Us</h3>
+            <div class="social-links">
+              <i class="bi bi-instagram"></i>
+              <i class="bi bi-facebook"></i>
+              <i class="bi bi-twitter"></i>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; <span id="current-year"></span> Fitness First. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal Overlay -->
+  <div class="modal-overlay" id="modal-overlay"></div>
+
+  <!-- Login Modal -->
+  <div class="modal" id="login-modal">
+    <div class="modal-header">
+      <h2>Login</h2>
+      <button class="close-btn" onclick="closeModal('login-modal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="login-form" onsubmit="return handleLoginSubmit(event)">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="your.email@example.com">
+          <div class="form-error" id="login-email-error"></div>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="••••••••">
+          <div class="form-error" id="login-password-error"></div>
+        </div>
+        <a href="#" class="forgot-link" onclick="showForgotPassword()">Forgot your password?</a>
+        <button type="submit" class="btn" style="width: 100%;">Sign in</button>
+      </form>
+
+      <!-- Forgot Password Form (Hidden initially) -->
+      <div id="forgot-password-form" style="display: none;">
+        <div style="margin-bottom: 20px;">
+          <a href="#" onclick="showLoginForm()" style="color: #4361ee; display: flex; align-items: center;">
+            <i class="bi bi-arrow-left" style="margin-right: 5px;"></i> Back to Login
+          </a>
+        </div>
+        <h3 style="margin-bottom: 15px;">Reset Password</h3>
+        <p style="margin-bottom: 20px; color: #666;">Enter your email to receive a password reset link</p>
+        <form id="forgot-form" onsubmit="return handleForgotSubmit(event)">
+          <div class="form-group">
+            <label for="forgot-email">Email</label>
+            <input type="email" id="forgot-email" placeholder="your.email@example.com">
+            <div class="form-error" id="forgot-email-error"></div>
+          </div>
+          <button type="submit" class="btn" style="width: 100%;" id="forgot-submit-btn">Send reset link</button>
+        </form>
+      </div>
+
+      <!-- Forgot Password Success Message (Hidden initially) -->
+      <div class="success-message" id="forgot-success">
+        <i class="bi bi-check-circle"></i>
+        <h3>Check your email</h3>
+        <p>We've sent a password reset link to your email address.</p>
+        <button class="btn btn-outline" onclick="showLoginForm()">Return to login</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p>Don't have an account? <a href="#" class="form-link" onclick="switchModal('login-modal', 'signup-modal')">Sign up</a></p>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div class="modal" id="signup-modal">
+    <div class="modal-header">
+      <h2>Sign Up</h2>
+      <button class="close-btn" onclick="closeModal('signup-modal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="signup-form" onsubmit="return handleSignupSubmit(event)">
+        <div class="form-group">
+          <label for="signup-name">Full Name</label>
+          <input type="text" id="signup-name" placeholder="John Doe">
+          <div class="form-error" id="signup-name-error"></div>
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" placeholder="your.email@example.com">
+          <div class="form-error" id="signup-email-error"></div>
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="••••••••">
+          <div class="form-error" id="signup-password-error"></div>
+        </div>
+        <div class="form-group">
+          <label for="signup-confirm-password">Confirm Password</label>
+          <input type="password" id="signup-confirm-password" placeholder="••••••••">
+          <div class="form-error" id="signup-confirm-password-error"></div>
+        </div>
+        <button type="submit" class="btn" style="width: 100%;" id="signup-submit-btn">Create account</button>
+      </form>
+      <!-- Signup Success Message (Hidden initially) -->
+      <div class="success-message" id="signup-success">
+        <i class="bi bi-check-circle"></i>
+        <h3>Account Created!</h3>
+        <p>Your account has been created successfully. Welcome to Fitness First!</p>
+        <button class="btn btn-outline" onclick="closeModal('signup-modal')">Continue to website</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p>Already have an account? <a href="#" class="form-link" onclick="switchModal('signup-modal', 'login-modal')">Sign in</a></p>
+    </div>
+  </div>
+
+  <script>
+    // Set current year in footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Modal functions
+    function openModal(modalId) {
+      document.getElementById('modal-overlay').style.display = 'block';
+      document.getElementById(modalId).style.display = 'block';
+      
+      // Reset forms when opening modals
+      if (modalId === 'login-modal') {
+        showLoginForm();
+        document.getElementById('login-form').reset();
+        clearErrors('login');
+      } else if (modalId === 'signup-modal') {
+        document.getElementById('signup-form').reset();
+        clearErrors('signup');
+        document.getElementById('signup-success').style.display = 'none';
+      }
+    }
+
+    function closeModal(modalId) {
+      document.getElementById('modal-overlay').style.display = 'none';
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    function switchModal(fromModalId, toModalId) {
+      document.getElementById(fromModalId).style.display = 'none';
+      document.getElementById(toModalId).style.display = 'block';
+      
+      // Reset forms when switching modals
+      if (toModalId === 'login-modal') {
+        showLoginForm();
+        document.getElementById('login-form').reset();
+        clearErrors('login');
+      } else if (toModalId === 'signup-modal') {
+        document.getElementById('signup-form').reset();
+        clearErrors('signup');
+        document.getElementById('signup-success').style.display = 'none';
+      }
+    }
+
+    // Show login form (hide forgot password)
+    function showLoginForm() {
+      document.getElementById('login-form').style.display = 'block';
+      document.getElementById('forgot-password-form').style.display = 'none';
+      document.getElementById('forgot-success').style.display = 'none';
+    }
+
+    // Show forgot password form
+    function showForgotPassword() {
+      document.getElementById('login-form').style.display = 'none';
+      document.getElementById('forgot-password-form').style.display = 'block';
+      document.getElementById('forgot-success').style.display = 'none';
+      document.getElementById('forgot-form').reset();
+      clearErrors('forgot');
+    }
+
+    // Reset contact form
+    function resetContactForm() {
+      document.getElementById('contact-form').reset();
+      document.getElementById('contact-form').style.display = 'block';
+      document.getElementById('contact-success').style.display = 'none';
+      clearErrors('contact');
+    }
+
+    // Close modals when clicking outside
+    document.getElementById('modal-overlay').addEventListener('click', function() {
+      document.querySelectorAll('.modal').forEach(modal => {
+        modal.style.display = 'none';
+      });
+      this.style.display = 'none';
+    });
+
+    // Prevent closing when clicking inside modal
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', function(event) {
+        event.stopPropagation();
+      });
+    });
+
+    // Clear form errors
+    function clearErrors(formPrefix) {
+      document.querySelectorAll(`div[id^="${formPrefix}-"][id$="-error"]`).forEach(error => {
+        error.style.display = 'none';
+        error.textContent = '';
+      });
+    }
+
+    // Show form error
+    function showError(elementId, message) {
+      const errorElement = document.getElementById(elementId);
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+    }
+
+    // Validate email format
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    // Login form validation and submission
+    function handleLoginSubmit(event) {
+      event.preventDefault();
+      let isValid = true;
+      clearErrors('login');
+      
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      
+      if (!email) {
+        showError('login-email-error', 'Email is required');
+        isValid = false;
+      } else if (!isValidEmail(email)) {
+        showError('login-email-error', 'Please enter a valid email address');
+        isValid = false;
+      }
+      
+      if (!password) {
+        showError('login-password-error', 'Password is required');
+        isValid = false;
+      } else if (password.length < 6) {
+        showError('login-password-error', 'Password must be at least 6 characters');
+        isValid = false;
+      }
+      
+      if (isValid) {
+        // In a real application, you would send this data to your backend
+        // For this demo, we'll just show a success message
+        alert('Login successful!');
+        closeModal('login-modal');
+      }
+      
+      return false;
+    }
+
+    // Signup form validation and submission
+    function handleSignupSubmit(event) {
+      event.preventDefault();
+      let isValid = true;
+      clearErrors('signup');
+      
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+      const confirmPassword = document.getElementById('signup-confirm-password').value;
+      
+      if (!name) {
+        showError('signup-name-error', 'Name is required');
+        isValid = false;
+      } else if (name.length < 2) {
+        showError('signup-name-error', 'Name must be at least 2 characters');
+        isValid = false;
+      }
+      
+      if (!email) {
+        showError('signup-email-error', 'Email is required');
+        isValid = false;
+      } else if (!isValidEmail(email)) {
+        showError('signup-email-error', 'Please enter a valid email address');
+        isValid = false;
+      }
+      
+      if (!password) {
+        showError('signup-password-error', 'Password is required');
+        isValid = false;
+      } else if (password.length < 8) {
+        showError('signup-password-error', 'Password must be at least 8 characters');
+        isValid = false;
+      } else if (!/[A-Z]/.test(password)) {
+        showError('signup-password-error', 'Password must contain at least one uppercase letter');
+        isValid = false;
+      } else if (!/[a-z]/.test(password)) {
+        showError('signup-password-error', 'Password must contain at least one lowercase letter');
+        isValid = false;
+      } else if (!/[0-9]/.test(password)) {
+        showError('signup-password-error', 'Password must contain at least one number');
+        isValid = false;
+      }
+      
+      if (!confirmPassword) {
+        showError('signup-confirm-password-error', 'Please confirm your password');
+        isValid = false;
+      } else if (password !== confirmPassword) {
+        showError('signup-confirm-password-error', 'Passwords do not match');
+        isValid = false;
+      }
+      
+      if (isValid) {
+        // In a real application, you would send this data to your backend
+        // For this demo, we'll simulate an API call with setTimeout
+        const submitBtn = document.getElementById('signup-submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Creating account...';
+        
+        // Simulate API call
+        setTimeout(() => {
+          // Show success message
+          document.getElementById('signup-form').style.display = 'none';
+          document.getElementById('signup-success').style.display = 'block';
+          
+          // Reset button state
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Create account';
+          
+          // In a real application, you would also send a welcome email using nodemailer here
+          // This would be done on the server side
+          console.log('Server would send welcome email to:', email);
+        }, 1500);
+      }
+      
+      return false;
+    }
+
+    // Forgot password form validation and submission
+    function handleForgotSubmit(event) {
+      event.preventDefault();
+      let isValid = true;
+      clearErrors('forgot');
+      
+      const email = document.getElementById('forgot-email').value.trim();
+      
+      if (!email) {
+        showError('forgot-email-error', 'Email is required');
+        isValid = false;
+      } else if (!isValidEmail(email)) {
+        showError('forgot-email-error', 'Please enter a valid email address');
+        isValid = false;
+      }
+      
+      if (isValid) {
+        // In a real application, you would send this data to your backend
+        // For this demo, we'll simulate an API call with setTimeout
+        const submitBtn = document.getElementById('forgot-submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        
+        // Simulate API call
+        setTimeout(() => {
+          // Show success message
+          document.getElementById('forgot-form').parentElement.style.display = 'none';
+          document.getElementById('forgot-success').style.display = 'block';
+          
+          // Reset button state
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send reset link';
+          
+          // In a real application, you would send a password reset email using nodemailer here
+          // This would be done on the server side
+          console.log('Server would send password reset email to:', email);
+        }, 1500);
+      }
+      
+      return false;
+    }
+
+    // Contact form validation and submission
+    function handleContactSubmit(event) {
+      event.preventDefault();
+      let isValid = true;
+      clearErrors('contact');
+      
+      const name = document.getElementById('contact-name').value.trim();
+      const email = document.getElementById('contact-email').value.trim();
+      const subject = document.getElementById('contact-subject').value.trim();
+      const message = document.getElementById('contact-message').value.trim();
+      
+      if (!name) {
+        showError('contact-name-error', 'Name is required');
+        isValid = false;
+      }
+      
+      if (!email) {
+        showError('contact-email-error', 'Email is required');
+        isValid = false;
+      } else if (!isValidEmail(email)) {
+        showError('contact-email-error', 'Please enter a valid email address');
+        isValid = false;
+      }
+      
+      if (!subject) {
+        showError('contact-subject-error', 'Subject is required');
+        isValid = false;
+      }
+      
+      if (!message) {
+        showError('contact-message-error', 'Message is required');
+        isValid = false;
+      }
+      
+      if (isValid) {
+        // In a real application, you would send this data to your backend
+        // For this demo, we'll simulate an API call with setTimeout
+        const submitBtn = document.getElementById('contact-submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        
+        // Simulate API call
+        setTimeout(() => {
+          // Show success message
+          document.getElementById('contact-form').style.display = 'none';
+          document.getElementById('contact-success').style.display = 'block';
+          
+          // Reset button state
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Message';
+          
+          // In a real application, you would send a notification email using nodemailer here
+          // This would be done on the server side
+          console.log('Server would send contact notification email with:', {
+            name,
+            email,
+            subject,
+            message
+          });
+        }, 1500);
+      }
+      
+      return false;
+    }
+
+    /*
+     * NODEMAILER SERVER-SIDE IMPLEMENTATION
+     * 
+     * The following code would be implemented on a Node.js server, not in this HTML file.
+     * This is just for reference to show how the nodemailer implementation would work.
+     * 
+     * You would need to:
+     * 1. Create a Node.js server (Express.js is recommended)
+     * 2. Install nodemailer: npm install nodemailer
+     * 3. Create API endpoints to handle form submissions
+     * 4. Use nodemailer to send emails
+     * 
+     * Here's how the server-side code would look:
+     */
+
+    /*
+    // SERVER-SIDE CODE (Node.js with Express)
+    const express = require('express');
+    const nodemailer = require('nodemailer');
+    const bodyParser = require('body-parser');
+    const cors = require('cors');
+
+    const app = express();
+    app.use(cors());
+    app.use(bodyParser.json());
+
+    // Create a transporter
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',  // or your SMTP server
+      port: 587,
+      secure: false,  // true for 465, false for other ports
+      auth: {
+        user: 'your-email@gmail.com',  // your email
+        pass: 'your-app-password'      // your email password or app password
+      }
+    });
+
+    // Contact form endpoint
+    app.post('/api/contact', async (req, res) => {
+      try {
+        const { name, email, subject, message } = req.body;
+        
+        // Validate input
+        if (!name || !email || !subject || !message) {
+          return res.status(400).json({ message: 'All fields are required' });
+        }
+        
+        // Email content
+        const mailOptions = {
+          from: 'your-email@gmail.com',
+          to: 'info@fitnessfirst.com',
+          replyTo: email,
+          subject: `Contact Form: ${subject}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #4361ee;">New Contact Form Submission</h2>
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Subject:</strong> ${subject}</p>
+              <div style="margin-top: 20px;">
+                <p><strong>Message:</strong></p>
+                <p style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">${message.replace(/\n/g, '<br>')}</p>
+              </div>
+            </div>
+          `
+        };
+        
+        // Send email
+        await transporter.sendMail(mailOptions);
+        
+        res.status(200).json({ message: 'Email sent successfully' });
+      } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ message: 'Failed to send email' });
+      }
+    });
+
+    // Password reset endpoint
+    app.post('/api/send-reset-email', async (req, res) => {
+      try {
+        const { email } = req.body;
+        
+        // Validate input
+        if (!email) {
+          return res.status(400).json({ message: 'Email is required' });
+        }
+        
+        // Generate reset token (in a real app, store this in a database with an expiration)
+        const resetToken = Math.random().toString(36).substring(2, 15);
+        const resetLink = `https://yourwebsite.com/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
+        
+        // Email content
+        const mailOptions = {
+          from: 'your-email@gmail.com',
+          to: email,
+          subject: 'Reset Your Password - Fitness First',
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #4361ee;">Reset Your Password</h2>
+              <p>Hello,</p>
+              <p>You requested to reset your password. Please click the button below to reset your password:</p>
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="${resetLink}" style="background-color: #4361ee; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold;">Reset Password</a>
+              </div>
+              <p>If you didn't request this, you can safely ignore this email.</p>
+              <p>The link will expire in 1 hour.</p>
+              <p>Best regards,<br>Fitness First Team</p>
+            </div>
+          `
+        };
+        
+        // Send email
+        await transporter.sendMail(mailOptions);
+        
+        res.status(200).json({ message: 'Password reset email sent' });
+      } catch (error) {
+        console.error('Error sending reset email:', error);
+        res.status(500).json({ message: 'Failed to send reset email' });
+      }
+    });
+
+    // Signup welcome email endpoint
+    app.post('/api/signup', async (req, res) => {
+      try {
+        const { name, email } = req.body;
+        
+        // Validate input
+        if (!name || !email) {
+          return res.status(400).json({ message: 'Name and email are required' });
+        }
+        
+        // Email content
+        const mailOptions = {
+          from: 'your-email@gmail.com',
+          to: email,
+          subject: 'Welcome to Fitness First!',
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #4361ee;">Welcome to Fitness First!</h2>
+              <p>Hello ${name},</p>
+              <p>Thank you for signing up with Fitness First! We're excited to have you on board.</p>
+              <p>You can now log in to your account and explore our products and services.</p>
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="https://yourwebsite.com" style="background-color: #4361ee; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold;">Visit Our Website</a>
+              </div>
+              <p>Best regards,<br>Fitness First Team</p>
+            </div>
+          `
+        };
+        
+        // Send email
+        await transporter.sendMail(mailOptions);
+        
+        res.status(200).json({ message: 'User registered successfully' });
+      } catch (error) {
+        console.error('Error registering user:', error);
+        res.status(500).json({ message: 'Failed to register user' });
+      }
+    });
+
+    // Start server
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+    */
+
+    /*
+     * CONNECTING THE FRONTEND TO THE SERVER
+     * 
+     * Once you have the server set up, you would modify the form submission handlers
+     * to send data to your server endpoints using fetch or XMLHttpRequest.
+     * 
+     * For example, the contact form submission would look like:
+     */
+
+    /*
+    function handleContactSubmit(event) {
+      event.preventDefault();
+      let isValid = true;
+      clearErrors('contact');
+      
+      const name = document.getElementById('contact-name').value.trim();
+      const email = document.getElementById('contact-email').value.trim();
+      const subject = document.getElementById('contact-subject').value.trim();
+      const message = document.getElementById('contact-message').value.trim();
+      
+      // Validation code...
+      
+      if (isValid) {
+        const submitBtn = document.getElementById('contact-submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        
+        // Send data to server
+        fetch('http://localhost:3000/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, email, subject, message }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.message === 'Email sent successfully') {
+            // Show success message
+            document.getElementById('contact-form').style.display = 'none';
+            document.getElementById('contact-success').style.display = 'block';
+          } else {
+            // Show error
+            showError('contact-message-error', data.message || 'Failed to send message');
+          }
+        })
+        .catch(error => {
+          showError('contact-message-error', 'An error occurred. Please try again.');
+          console.error('Error:', error);
+        })
+        .finally(() => {
+          // Reset button state
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Message';
+        });
+      }
+      
+      return false;
+    }
+    */
+  </script>
+</body>
+</html>

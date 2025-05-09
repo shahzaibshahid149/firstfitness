@@ -1,0 +1,258 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #697565;
+    color: #333;
+  }
+  
+  /* Navbar Styling */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2c3e50;
+    padding: 20px;
+  }
+  
+  .navbar .logo h1 {
+    color: #fff;
+    font-size: 30px;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+  }
+  
+  .nav-links li {
+    margin: 0 15px;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    padding: 10px;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links a:hover {
+    color: #fcf8f391;
+  }
+  
+  /* Hero Section */
+  .hero {
+    background-image: url('main.webp');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    padding: 100px 30px;
+    height: 600px;
+    text-align: center;
+  }
+  
+  .hero-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .hero h2 {
+    font-size: 50px;
+    margin-bottom: 20px;
+  }
+  
+  .hero p {
+    font-size: 22px;
+    margin-bottom: 40px;
+  }
+  
+  .hero .btn {
+    text-decoration: none;
+    background-color: #f39c12;
+    color: #fff;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .hero .btn:hover {
+    background-color: #e74c3c;
+    color: #fff;
+    transform: scale(1.1);
+  }
+  
+  /* About Section */
+  .about {
+    background-color: #fff;
+    padding: 50px 30px;
+    text-align: center;
+  }
+  
+  .about h2 {
+    font-size: 40px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+  }
+  
+  .about-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .about p {
+    font-size: 20px;
+    color: #7f8c8d;
+    margin-bottom: 30px;
+  }
+  
+  .about-img {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 10px;
+  }
+  
+  /* Services Section */
+  .services {
+    padding: 50px 30px;
+    background-color: #ecf0f1;
+    text-align: center;
+  }
+  
+  .services h2 {
+    font-size: 40px;
+    color: #2c3e50;
+    margin-bottom: 40px;
+  }
+  
+  .service-item {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .service-item img {
+    width: 300px;
+    border-radius: 10px;
+  }
+  
+  .service-text {
+    max-width: 400px;
+  }
+  
+  .service-text h3 {
+    font-size: 30px;
+    margin-bottom: 10px;
+  }
+  
+  .service-text p {
+    font-size: 18px;
+    color: #7f8c8d;
+  }
+  
+  /* Login Section */
+  .login {
+    background-color: #ecf0f1;
+    padding: 50px 30px;
+    text-align: center;
+  }
+  
+  .login form {
+    display: inline-block;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login input {
+    width: 250px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  
+  .login .btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #f39c12;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .login .btn:hover {
+    background-color: #e74c3c;
+    transform: scale(1.05);
+  }
+  
+  /* Footer Section */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px 30px;
+    background-color: #2c3e50;
+    color: #fff;
+    margin-top: 40px;
+  }
+  
+  .footer-content h3, .footer-social h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .contact-info {
+    list-style: none;
+  }
+  
+  .contact-info li {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .social-links a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    margin-right: 40px;
+    padding: 5px;
+    transition: color 0.3s ease;
+  }
+  
+  .social-links a:hover {
+    color: #f39c12;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .hero {
+    animation: fadeIn 1.5s ease-in-out;
+  }
+  
+  .login form {
+    animation: fadeIn 2s ease-in-out;
+  }
+  
