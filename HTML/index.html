@@ -425,6 +425,31 @@
       margin-bottom: 20px;
     }
 
+    /* Email log styles */
+    .email-log {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      display: none;
+    }
+
+    .email-log h3 {
+      margin-bottom: 15px;
+      color: #4361ee;
+    }
+
+    .email-log pre {
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px solid #eee;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
     /* Responsive styles */
     @media (max-width: 768px) {
       .nav-links {
@@ -460,6 +485,27 @@
         right: 5%;
         left: 5%;
       }
+    }
+
+    /* Debug mode toggle */
+    .debug-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #333;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 30px;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .debug-toggle input {
+      margin: 0;
     }
   </style>
 </head>
@@ -569,6 +615,11 @@
             <p>Thank you for contacting us. We'll get back to you soon!</p>
             <button class="btn btn-outline" onclick="resetContactForm()">Send Another Message</button>
           </div>
+          <!-- Email Log (Hidden initially, shown in debug mode) -->
+          <div class="email-log" id="contact-email-log">
+            <h3>Email Log (Simulated)</h3>
+            <pre id="contact-email-content"></pre>
+          </div>
         </div>
       </div>
     </section>
@@ -653,6 +704,12 @@
         <p>We've sent a password reset link to your email address.</p>
         <button class="btn btn-outline" onclick="showLoginForm()">Return to login</button>
       </div>
+      
+      <!-- Email Log (Hidden initially, shown in debug mode) -->
+      <div class="email-log" id="forgot-email-log">
+        <h3>Email Log (Simulated)</h3>
+        <pre id="forgot-email-content"></pre>
+      </div>
     </div>
     <div class="modal-footer">
       <p>Don't have an account? <a href="#" class="form-link" onclick="switchModal('login-modal', 'signup-modal')">Sign up</a></p>
@@ -696,15 +753,39 @@
         <p>Your account has been created successfully. Welcome to Fitness First!</p>
         <button class="btn btn-outline" onclick="closeModal('signup-modal')">Continue to website</button>
       </div>
+      
+      <!-- Email Log (Hidden initially, shown in debug mode) -->
+      <div class="email-log" id="signup-email-log">
+        <h3>Email Log (Simulated)</h3>
+        <pre id="signup-email-content"></pre>
+      </div>
     </div>
     <div class="modal-footer">
       <p>Already have an account? <a href="#" class="form-link" onclick="switchModal('signup-modal', 'login-modal')">Sign in</a></p>
     </div>
   </div>
 
+  <!-- Debug Mode Toggle -->
+  <div class="debug-toggle">
+    <input type="checkbox" id="debug-mode" onchange="toggleDebugMode()">
+    <label for="debug-mode">Show Email Logs</label>
+  </div>
+
   <script>
     // Set current year in footer
     document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Debug mode state
+    let debugMode = false;
+
+    // Toggle debug mode
+    function toggleDebugMode() {
+      debugMode = document.getElementById('debug-mode').checked;
+      const emailLogs = document.querySelectorAll('.email-log');
+      emailLogs.forEach(log => {
+        log.style.display = debugMode ? 'block' : 'none';
+      });
+    }
 
     // Modal functions
     function openModal(modalId) {
@@ -720,6 +801,7 @@
         document.getElementById('signup-form').reset();
         clearErrors('signup');
         document.getElementById('signup-success').style.display = 'none';
+        document.getElementById('signup-email-log').style.display = debugMode ? 'block' : 'none';
       }
     }
 
@@ -741,6 +823,7 @@
         document.getElementById('signup-form').reset();
         clearErrors('signup');
         document.getElementById('signup-success').style.display = 'none';
+        document.getElementById('signup-email-log').style.display = debugMode ? 'block' : 'none';
       }
     }
 
@@ -749,6 +832,7 @@
       document.getElementById('login-form').style.display = 'block';
       document.getElementById('forgot-password-form').style.display = 'none';
       document.getElementById('forgot-success').style.display = 'none';
+      document.getElementById('forgot-email-log').style.display = 'none';
     }
 
     // Show forgot password form
@@ -757,6 +841,7 @@
       document.getElementById('forgot-password-form').style.display = 'block';
       document.getElementById('forgot-success').style.display = 'none';
       document.getElementById('forgot-form').reset();
+      document.getElementById('forgot-email-log').style.display = debugMode ? 'block' : 'none';
       clearErrors('forgot');
     }
 
@@ -802,6 +887,78 @@
     function isValidEmail(email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
+    }
+
+    // Format date for email logs
+    function formatDate() {
+      const now = new Date();
+      return now.toLocaleString();
+    }
+
+    // Simulate sending email (nodemailer replacement)
+    function simulateSendEmail(options) {
+      return new Promise((resolve) => {
+        // Log the email content
+        console.log('Email would be sent with:', options);
+        
+        // In a real application, this would be replaced with a fetch call to a server endpoint
+        // that uses nodemailer to send the actual email
+        
+        // Simulate network delay
+        setTimeout(() => {
+          resolve({ success: true, message: 'Email sent successfully' });
+        }, 1000);
+      });
+    }
+
+    // Generate HTML email template for welcome email
+    function generateWelcomeEmailHTML(name) {
+      return `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #4361ee;">Welcome to Fitness First!</h2>
+          <p>Hello ${name},</p>
+          <p>Thank you for signing up with Fitness First! We're excited to have you on board.</p>
+          <p>You can now log in to your account and explore our products and services.</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="https://yourwebsite.com" style="background-color: #4361ee; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold;">Visit Our Website</a>
+          </div>
+          <p>Best regards,<br>Fitness First Team</p>
+        </div>
+      `;
+    }
+
+    // Generate HTML email template for password reset
+    function generateResetEmailHTML(email, resetToken) {
+      const resetLink = `https://yourwebsite.com/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
+      return `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #4361ee;">Reset Your Password</h2>
+          <p>Hello,</p>
+          <p>You requested to reset your password. Please click the button below to reset your password:</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${resetLink}" style="background-color: #4361ee; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold;">Reset Password</a>
+          </div>
+          <p>If you didn't request this, you can safely ignore this email.</p>
+          <p>The link will expire in 1 hour.</p>
+          <p>Best regards,<br>Fitness First Team</p>
+        </div>
+      `;
+    }
+
+    // Generate HTML email template for contact form
+    function generateContactEmailHTML(name, email, subject, message) {
+      return `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #4361ee;">New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Subject:</strong> ${subject}</p>
+          <div style="margin-top: 20px;">
+            <p><strong>Message:</strong></p>
+            <p style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">${message.replace(/\n/g, '<br>')}</p>
+          </div>
+        </div>
+      `;
     }
 
     // Login form validation and submission
@@ -898,20 +1055,48 @@
         submitBtn.disabled = true;
         submitBtn.textContent = 'Creating account...';
         
-        // Simulate API call
-        setTimeout(() => {
-          // Show success message
-          document.getElementById('signup-form').style.display = 'none';
-          document.getElementById('signup-success').style.display = 'block';
-          
-          // Reset button state
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Create account';
-          
-          // In a real application, you would also send a welcome email using nodemailer here
-          // This would be done on the server side
-          console.log('Server would send welcome email to:', email);
-        }, 1500);
+        // Generate welcome email HTML
+        const welcomeEmailHTML = generateWelcomeEmailHTML(name);
+        
+        // Email options (what would be sent to nodemailer)
+        const emailOptions = {
+          from: 'noreply@fitnessfirst.com',
+          to: email,
+          subject: 'Welcome to Fitness First!',
+          html: welcomeEmailHTML
+        };
+        
+        // Display email content in debug mode
+        if (debugMode) {
+          document.getElementById('signup-email-content').textContent = 
+            `Date: ${formatDate()}\n` +
+            `From: ${emailOptions.from}\n` +
+            `To: ${emailOptions.to}\n` +
+            `Subject: ${emailOptions.subject}\n\n` +
+            `HTML Content:\n${welcomeEmailHTML}`;
+          document.getElementById('signup-email-log').style.display = 'block';
+        }
+        
+        // Simulate sending email
+        simulateSendEmail(emailOptions)
+          .then(response => {
+            if (response.success) {
+              // Show success message
+              document.getElementById('signup-form').style.display = 'none';
+              document.getElementById('signup-success').style.display = 'block';
+            } else {
+              showError('signup-email-error', response.message || 'Failed to create account');
+            }
+          })
+          .catch(error => {
+            showError('signup-email-error', 'An error occurred. Please try again.');
+            console.error('Error:', error);
+          })
+          .finally(() => {
+            // Reset button state
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Create account';
+          });
       }
       
       return false;
@@ -940,20 +1125,51 @@
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending...';
         
-        // Simulate API call
-        setTimeout(() => {
-          // Show success message
-          document.getElementById('forgot-form').parentElement.style.display = 'none';
-          document.getElementById('forgot-success').style.display = 'block';
-          
-          // Reset button state
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Send reset link';
-          
-          // In a real application, you would send a password reset email using nodemailer here
-          // This would be done on the server side
-          console.log('Server would send password reset email to:', email);
-        }, 1500);
+        // Generate a reset token (in a real app, this would be done on the server)
+        const resetToken = Math.random().toString(36).substring(2, 15);
+        
+        // Generate reset email HTML
+        const resetEmailHTML = generateResetEmailHTML(email, resetToken);
+        
+        // Email options (what would be sent to nodemailer)
+        const emailOptions = {
+          from: 'noreply@fitnessfirst.com',
+          to: email,
+          subject: 'Reset Your Password - Fitness First',
+          html: resetEmailHTML
+        };
+        
+        // Display email content in debug mode
+        if (debugMode) {
+          document.getElementById('forgot-email-content').textContent = 
+            `Date: ${formatDate()}\n` +
+            `From: ${emailOptions.from}\n` +
+            `To: ${emailOptions.to}\n` +
+            `Subject: ${emailOptions.subject}\n\n` +
+            `HTML Content:\n${resetEmailHTML}`;
+          document.getElementById('forgot-email-log').style.display = 'block';
+        }
+        
+        // Simulate sending email
+        simulateSendEmail(emailOptions)
+          .then(response => {
+            if (response.success) {
+              // Show success message
+              document.getElementById('forgot-form').parentElement.style.display = 'none';
+              document.getElementById('forgot-success').style.display = 'block';
+            } else {
+              showError('forgot-email-error', response.message || 'Failed to send reset email');
+            }
+          })
+          .catch(error => {
+            showError('forgot-email-error', 'An error occurred. Please try again.');
+            console.error('Error:', error);
+          })
+          .finally(() => {
+            // Reset button state
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send reset link';
+          });
       }
       
       return false;
@@ -1000,257 +1216,114 @@
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending...';
         
-        // Simulate API call
-        setTimeout(() => {
-          // Show success message
-          document.getElementById('contact-form').style.display = 'none';
-          document.getElementById('contact-success').style.display = 'block';
-          
-          // Reset button state
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Send Message';
-          
-          // In a real application, you would send a notification email using nodemailer here
-          // This would be done on the server side
-          console.log('Server would send contact notification email with:', {
-            name,
-            email,
-            subject,
-            message
-          });
-        }, 1500);
-      }
-      
-      return false;
-    }
-
-    /*
-     * NODEMAILER SERVER-SIDE IMPLEMENTATION
-     * 
-     * The following code would be implemented on a Node.js server, not in this HTML file.
-     * This is just for reference to show how the nodemailer implementation would work.
-     * 
-     * You would need to:
-     * 1. Create a Node.js server (Express.js is recommended)
-     * 2. Install nodemailer: npm install nodemailer
-     * 3. Create API endpoints to handle form submissions
-     * 4. Use nodemailer to send emails
-     * 
-     * Here's how the server-side code would look:
-     */
-
-    /*
-    // SERVER-SIDE CODE (Node.js with Express)
-    const express = require('express');
-    const nodemailer = require('nodemailer');
-    const bodyParser = require('body-parser');
-    const cors = require('cors');
-
-    const app = express();
-    app.use(cors());
-    app.use(bodyParser.json());
-
-    // Create a transporter
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',  // or your SMTP server
-      port: 587,
-      secure: false,  // true for 465, false for other ports
-      auth: {
-        user: 'your-email@gmail.com',  // your email
-        pass: 'your-app-password'      // your email password or app password
-      }
-    });
-
-    // Contact form endpoint
-    app.post('/api/contact', async (req, res) => {
-      try {
-        const { name, email, subject, message } = req.body;
+        // Generate contact email HTML
+        const contactEmailHTML = generateContactEmailHTML(name, email, subject, message);
         
-        // Validate input
-        if (!name || !email || !subject || !message) {
-          return res.status(400).json({ message: 'All fields are required' });
-        }
-        
-        // Email content
-        const mailOptions = {
-          from: 'your-email@gmail.com',
+        // Email options (what would be sent to nodemailer)
+        const emailOptions = {
+          from: 'noreply@fitnessfirst.com',
           to: 'info@fitnessfirst.com',
           replyTo: email,
           subject: `Contact Form: ${subject}`,
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #4361ee;">New Contact Form Submission</h2>
-              <p><strong>Name:</strong> ${name}</p>
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Subject:</strong> ${subject}</p>
-              <div style="margin-top: 20px;">
-                <p><strong>Message:</strong></p>
-                <p style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">${message.replace(/\n/g, '<br>')}</p>
-              </div>
-            </div>
-          `
+          html: contactEmailHTML
         };
         
-        // Send email
-        await transporter.sendMail(mailOptions);
-        
-        res.status(200).json({ message: 'Email sent successfully' });
-      } catch (error) {
-        console.error('Error sending email:', error);
-        res.status(500).json({ message: 'Failed to send email' });
-      }
-    });
-
-    // Password reset endpoint
-    app.post('/api/send-reset-email', async (req, res) => {
-      try {
-        const { email } = req.body;
-        
-        // Validate input
-        if (!email) {
-          return res.status(400).json({ message: 'Email is required' });
+        // Display email content in debug mode
+        if (debugMode) {
+          document.getElementById('contact-email-content').textContent = 
+            `Date: ${formatDate()}\n` +
+            `From: ${emailOptions.from}\n` +
+            `To: ${emailOptions.to}\n` +
+            `Reply-To: ${emailOptions.replyTo}\n` +
+            `Subject: ${emailOptions.subject}\n\n` +
+            `HTML Content:\n${contactEmailHTML}`;
+          document.getElementById('contact-email-log').style.display = 'block';
         }
         
-        // Generate reset token (in a real app, store this in a database with an expiration)
-        const resetToken = Math.random().toString(36).substring(2, 15);
-        const resetLink = `https://yourwebsite.com/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
-        
-        // Email content
-        const mailOptions = {
-          from: 'your-email@gmail.com',
-          to: email,
-          subject: 'Reset Your Password - Fitness First',
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #4361ee;">Reset Your Password</h2>
-              <p>Hello,</p>
-              <p>You requested to reset your password. Please click the button below to reset your password:</p>
-              <div style="text-align: center; margin: 30px 0;">
-                <a href="${resetLink}" style="background-color: #4361ee; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold;">Reset Password</a>
-              </div>
-              <p>If you didn't request this, you can safely ignore this email.</p>
-              <p>The link will expire in 1 hour.</p>
-              <p>Best regards,<br>Fitness First Team</p>
-            </div>
-          `
-        };
-        
-        // Send email
-        await transporter.sendMail(mailOptions);
-        
-        res.status(200).json({ message: 'Password reset email sent' });
-      } catch (error) {
-        console.error('Error sending reset email:', error);
-        res.status(500).json({ message: 'Failed to send reset email' });
-      }
-    });
-
-    // Signup welcome email endpoint
-    app.post('/api/signup', async (req, res) => {
-      try {
-        const { name, email } = req.body;
-        
-        // Validate input
-        if (!name || !email) {
-          return res.status(400).json({ message: 'Name and email are required' });
-        }
-        
-        // Email content
-        const mailOptions = {
-          from: 'your-email@gmail.com',
-          to: email,
-          subject: 'Welcome to Fitness First!',
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #4361ee;">Welcome to Fitness First!</h2>
-              <p>Hello ${name},</p>
-              <p>Thank you for signing up with Fitness First! We're excited to have you on board.</p>
-              <p>You can now log in to your account and explore our products and services.</p>
-              <div style="text-align: center; margin: 30px 0;">
-                <a href="https://yourwebsite.com" style="background-color: #4361ee; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold;">Visit Our Website</a>
-              </div>
-              <p>Best regards,<br>Fitness First Team</p>
-            </div>
-          `
-        };
-        
-        // Send email
-        await transporter.sendMail(mailOptions);
-        
-        res.status(200).json({ message: 'User registered successfully' });
-      } catch (error) {
-        console.error('Error registering user:', error);
-        res.status(500).json({ message: 'Failed to register user' });
-      }
-    });
-
-    // Start server
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-    */
-
-    /*
-     * CONNECTING THE FRONTEND TO THE SERVER
-     * 
-     * Once you have the server set up, you would modify the form submission handlers
-     * to send data to your server endpoints using fetch or XMLHttpRequest.
-     * 
-     * For example, the contact form submission would look like:
-     */
-
-    /*
-    function handleContactSubmit(event) {
-      event.preventDefault();
-      let isValid = true;
-      clearErrors('contact');
-      
-      const name = document.getElementById('contact-name').value.trim();
-      const email = document.getElementById('contact-email').value.trim();
-      const subject = document.getElementById('contact-subject').value.trim();
-      const message = document.getElementById('contact-message').value.trim();
-      
-      // Validation code...
-      
-      if (isValid) {
-        const submitBtn = document.getElementById('contact-submit-btn');
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending...';
-        
-        // Send data to server
-        fetch('http://localhost:3000/api/contact', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name, email, subject, message }),
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.message === 'Email sent successfully') {
-            // Show success message
-            document.getElementById('contact-form').style.display = 'none';
-            document.getElementById('contact-success').style.display = 'block';
-          } else {
-            // Show error
-            showError('contact-message-error', data.message || 'Failed to send message');
-          }
-        })
-        .catch(error => {
-          showError('contact-message-error', 'An error occurred. Please try again.');
-          console.error('Error:', error);
-        })
-        .finally(() => {
-          // Reset button state
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Send Message';
-        });
+        // Simulate sending email
+        simulateSendEmail(emailOptions)
+          .then(response => {
+            if (response.success) {
+              // Show success message
+              document.getElementById('contact-form').style.display = 'none';
+              document.getElementById('contact-success').style.display = 'block';
+            } else {
+              showError('contact-message-error', response.message || 'Failed to send message');
+            }
+          })
+          .catch(error => {
+            showError('contact-message-error', 'An error occurred. Please try again.');
+            console.error('Error:', error);
+          })
+          .finally(() => {
+            // Reset button state
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Message';
+          });
       }
       
       return false;
     }
-    */
+
+    /*
+     * IMPORTANT NOTE ABOUT NODEMAILER
+     * 
+     * Nodemailer is a Node.js module that can only run on a server, not in a browser.
+     * The code above simulates what would happen if nodemailer was being used on a server.
+     * 
+     * In a real application, you would need:
+     * 
+     * 1. A server running Node.js (like Express.js)
+     * 2. API endpoints on that server to handle form submissions
+     * 3. Nodemailer installed on the server to send actual emails
+     * 
+     * The client-side JavaScript would make fetch() calls to these API endpoints,
+     * and the server would use nodemailer to send the emails.
+     * 
+     * Example server-side code (Node.js with Express and Nodemailer):
+     * 
+     * const express = require('express');
+     * const nodemailer = require('nodemailer');
+     * const app = express();
+     * app.use(express.json());
+     * 
+     * // Create a transporter
+     * const transporter = nodemailer.createTransport({
+     *   host: 'smtp.gmail.com',
+     *   port: 587,
+     *   secure: false,
+     *   auth: {
+     *     user: 'your-email@gmail.com',
+     *     pass: 'your-app-password'
+     *   }
+     * });
+     * 
+     * // Contact form endpoint
+     * app.post('/api/contact', async (req, res) => {
+     *   try {
+     *     const { name, email, subject, message } = req.body;
+     *     
+     *     // Email options
+     *     const mailOptions = {
+     *       from: 'your-email@gmail.com',
+     *       to: 'info@fitnessfirst.com',
+     *       replyTo: email,
+     *       subject: `Contact Form: ${subject}`,
+     *       html: `<div>...</div>` // HTML email content
+     *     };
+     *     
+     *     // Send email
+     *     await transporter.sendMail(mailOptions);
+     *     
+     *     res.status(200).json({ success: true, message: 'Email sent successfully' });
+     *   } catch (error) {
+     *     console.error('Error sending email:', error);
+     *     res.status(500).json({ success: false, message: 'Failed to send email' });
+     *   }
+     * });
+     * 
+     * app.listen(3000, () => console.log('Server running on port 3000'));
+     */
   </script>
 </body>
 </html>
